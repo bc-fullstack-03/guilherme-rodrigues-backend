@@ -16,6 +16,13 @@ public class Post {
         this.usuarioCriador = usuarioCriador;
     }
 
+    //Métodos ----------------------------------------
+
+    public void imprime(){
+        System.out.println("@"+usuarioCriador.getUsername());
+        System.out.println(conteudo);
+        System.out.println(dataHora);
+    }
 
     //Getters e Setters ------------------------------
 
@@ -38,8 +45,5 @@ public class Post {
     public ArrayList<Post> getPostResposta() {
         return postResposta;
     }
-
-    //Métodos ----------------------------------------
-
 
 }

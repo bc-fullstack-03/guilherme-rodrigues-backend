@@ -21,48 +21,6 @@ public class Usuario{
         this.senha = senha;
     }
 
-    //Getters e Setters ------------------------------
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public int getSeguidores() {
-        return seguidores;
-    }
-
-    public int getSeguindo() {
-        return seguindo;
-    }
-
     //Métodos ----------------------------------
 
     public void imprime(){
@@ -75,26 +33,38 @@ public class Usuario{
 
     public void postar(String conteudo){
         Post post = new Post(conteudo, this);
-        System.out.println(post.getConteudo());
-        System.out.println(post.getDataHora());
-        System.out.println(post.getUsuarioCriador().getUsername());
         posts.add(post);
     }
 
+    public Post getPost(int indexDoPost){
+        return posts.get(indexDoPost);
+    }
+
+    public void responderPost(String conteudo, Post post){
+        PostResposta resposta = new PostResposta(conteudo, this, post);
+        posts.add(resposta);
+    }
+
     public void listarPosts(){
-        System.out.println("""
-                    ------------------------------------
-                    
-                    """);
+        System.out.println("");
         System.out.println("Posts do "+username);
+        System.out.print("------------------------------------");
+        System.out.println("");
         for (Post item:posts) {
-            System.out.println(item.getConteudo());
-            System.out.println(item.getDataHora());
-            System.out.println("""
-                    
-                    ------------------------------------
-                    
-                    """);
+            System.out.println("");
+            item.imprime();
+            System.out.println("");
+            System.out.println("------------------------------------");
         }
+    }
+
+    //Getters e Setters ------------------------------
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
