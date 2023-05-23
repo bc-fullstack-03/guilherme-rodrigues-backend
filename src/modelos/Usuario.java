@@ -67,4 +67,12 @@ public class Usuario{
     public String getUsername() {
         return username;
     }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

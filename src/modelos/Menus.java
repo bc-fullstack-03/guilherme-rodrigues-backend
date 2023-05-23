@@ -5,9 +5,10 @@ public class Menus {
                 _________________________________
                 *** Seja bem vindo ao Otter! ***
                 
-                1 - Entrar
-                2 - Cadastrar
+                Opção 1 - Entrar
+                Opção 2 - Cadastrar
                 _________________________________
+                Digite aqui sua opção
                 """;
     String menuInicial = """
                 _________________________________
