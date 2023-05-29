@@ -9,9 +9,10 @@ public class Usuario{
     private String email;
     private String senha;
     private String descricao;
-    private int seguidores;
-    private int seguindo;
     private ArrayList<Post> posts = new ArrayList<>();
+    private ArrayList<Usuario> seguidores = new ArrayList<>();
+    private ArrayList<Usuario> seguindo = new ArrayList<>();
+
     Scanner leitura = new Scanner(System.in);
 
     public Usuario(String nome, String username, String email, String senha) {
@@ -27,8 +28,8 @@ public class Usuario{
         System.out.println("Nome: "+nome);
         System.out.println("Username: "+username);
         System.out.println("descrição: "+descricao);
-        System.out.println("Num. Seguidores: "+seguidores);
-        System.out.println("Num. seguindo: "+seguindo);
+        System.out.println("Num. Seguidores: "+seguidores.size());
+        System.out.println("Num. seguindo: "+seguindo.size());
     }
 
     public void postar(String conteudo){
@@ -55,6 +56,60 @@ public class Usuario{
             item.imprime();
             System.out.println("");
             System.out.println("------------------------------------");
+        }
+    }
+
+    public void adicionarSeguidor(Usuario seguidor){
+        seguidores.add(seguidor);
+    }
+
+    public void seguirUsuario(Usuario usuarioAlvo){
+        seguindo.add(usuarioAlvo);
+    }
+
+    public void retirarSeguidor(Usuario seguidor){
+        seguidores.remove(seguidor);
+    }
+
+    public void pararDeSeguir(Usuario usuarioAlvo){
+        seguindo.remove(usuarioAlvo);
+    }
+
+    public boolean validaSegueUsuario(Usuario usuarioAlvo){
+        if (seguindo.contains(usuarioAlvo)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public void mostrarSeguidores(Usuario usuarioAlvo){
+        if (!seguidores.isEmpty()){
+            System.out.println("Lista de pessoas que seguem @"+username);
+            for (Usuario item: seguidores) {
+                    System.out.println("@"+item.getUsername());
+            }
+        }else {
+            if (usuarioAlvo.getUsername().equals(this.getUsername())){
+                System.out.println("Você não tem seguidores :(");
+            }else {
+                System.out.println("@"+username+" não tem seguidores :(");
+            }
+        }
+    }
+
+    public void mostrarPessoasQueSegue(Usuario usuarioAlvo){
+        if (!seguindo.isEmpty()){
+            System.out.println("Lista de pessoas que @"+username+" segue:");
+            for (Usuario item: seguindo) {
+                System.out.println("@"+item.getUsername());
+            }
+        }else {
+            if (usuarioAlvo.getUsername().equals(this.getUsername())){
+                System.out.println("Você não está seguindo ninguém  :(");
+            }else {
+                System.out.println("@"+username+" não está seguindo ninguém :(");
+            }
         }
     }
 

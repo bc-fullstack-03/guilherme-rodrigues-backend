@@ -65,6 +65,16 @@ public class Otter {
         } else return usuario.getSenha().equals(senha);
     }
 
+    public void seguir(Usuario usuarioLogado, Usuario usuarioAlvo){ //guarda o nome de usuario na lista de seguidos
+        usuarioLogado.seguirUsuario(usuarioAlvo);
+        usuarioAlvo.adicionarSeguidor(usuarioLogado);
+    }
+
+    public void pararDeSeguir(Usuario usuarioLogado, Usuario usuarioAlvo){
+        usuarioLogado.pararDeSeguir(usuarioAlvo);
+        usuarioAlvo.retirarSeguidor(usuarioLogado);
+    }
+
     // listar posts geral ou especifico
 
 }
