@@ -22,22 +22,7 @@ public class Otter {
     // lista todos os usuarios da lista de usuários
     public void listarUsuarios(){
         for (Usuario item: usuarios) {
-            System.out.println(item.getUsername());
-        }
-    }
-
-    // imprime os dados de um usuário em específico
-    public void imprimeUsuario(String username){
-        Usuario alvo = null;
-        for (Usuario item: usuarios) {
-            if (item.getUsername().equals(username)){
-                alvo = item;
-            }
-        }
-        if (alvo != null){
-            alvo.imprime();
-        }else {
-            System.out.println("Usuário não encontrado!");
+            System.out.println("@"+item.getUsername());
         }
     }
 

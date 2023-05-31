@@ -27,7 +27,7 @@ public class Usuario{
     public void imprime(){
         System.out.println("Nome: "+nome);
         System.out.println("Username: "+username);
-        System.out.println("descrição: "+descricao);
+        System.out.println("Descrição: "+descricao);
         System.out.println("Num. Seguidores: "+seguidores.size());
         System.out.println("Num. seguindo: "+seguindo.size());
     }
@@ -47,14 +47,14 @@ public class Usuario{
     }
 
     public void listarPosts(){
-        System.out.println("");
+        System.out.println();
         System.out.println("Posts do "+username);
         System.out.print("------------------------------------");
-        System.out.println("");
+        System.out.println();
         for (Post item:posts) {
-            System.out.println("");
+            System.out.println();
             item.imprime();
-            System.out.println("");
+            System.out.println();
             System.out.println("------------------------------------");
         }
     }
@@ -76,11 +76,7 @@ public class Usuario{
     }
 
     public boolean validaSegueUsuario(Usuario usuarioAlvo){
-        if (seguindo.contains(usuarioAlvo)){
-            return true;
-        }else {
-            return false;
-        }
+        return seguindo.contains(usuarioAlvo);
     }
 
     public void mostrarSeguidores(Usuario usuarioAlvo){
@@ -90,7 +86,7 @@ public class Usuario{
                     System.out.println("@"+item.getUsername());
             }
         }else {
-            if (usuarioAlvo.getUsername().equals(this.getUsername())){
+            if (usuarioAlvo.getUsername().equals(username)){
                 System.out.println("Você não tem seguidores :(");
             }else {
                 System.out.println("@"+username+" não tem seguidores :(");

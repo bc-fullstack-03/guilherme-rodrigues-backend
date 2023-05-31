@@ -8,10 +8,6 @@ public class PostResposta extends Post{
         this.postReferencia = postReferencia;
     }
 
-    public Post getPostReferencia() {
-        return postReferencia;
-    }
-
     @Override
     public void imprime() {
         System.out.println("Em resposta a @" + postReferencia.getUsuarioCriador().getUsername());

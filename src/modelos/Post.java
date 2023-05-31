@@ -26,24 +26,8 @@ public class Post {
 
     //Getters e Setters ------------------------------
 
-    public String getConteudo() {
-        return conteudo;
-    }
-
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
-    }
-
-    public Date getDataHora() {
-        return dataHora;
-    }
-
     public Usuario getUsuarioCriador() {
         return usuarioCriador;
-    }
-
-    public ArrayList<Post> getPostResposta() {
-        return postResposta;
     }
 
 }
