@@ -3,7 +3,7 @@ package modelos;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Post {
+public class Post implements Comparable<Post>{
     private String conteudo;
     private Date dataHora;
     private Usuario usuarioCriador;
@@ -22,6 +22,9 @@ public class Post {
         System.out.println("@"+usuarioCriador.getUsername());
         System.out.println(conteudo);
         System.out.println(dataHora);
+        System.out.println();
+        System.out.println("------------------------------------");
+
     }
 
     //Getters e Setters ------------------------------
@@ -30,4 +33,8 @@ public class Post {
         return usuarioCriador;
     }
 
+    @Override
+    public int compareTo(Post outroPost) {
+        return this.dataHora.compareTo(outroPost.dataHora);
+    }
 }

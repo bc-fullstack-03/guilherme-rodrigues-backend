@@ -15,21 +15,32 @@ public class Principal {
 
         // mockando(mock) usuarios para teste
         otter.cadastrarUsuario("Guilherme", "milegui", "guilherme@gmail.com", "123");
-        otter.buscaUsuario("milegui").postar("vou dar unfollow em mim, to mto chata dó falo besteira e candei d ver minha cara no espelho...");
-        otter.buscaUsuario("milegui").postar("descobri que comprar moveis e coisa pra casa é mais prazeroso que comprar um look novo");
-        otter.buscaUsuario("milegui").postar("a dor mostra quem agente realmente é. eu sou uma viadona");
+        Usuario milegui = otter.buscaUsuario("milegui");
+        milegui.postar("vou dar unfollow em mim, to mto chata dó falo besteira e candei d ver minha cara no espelho...");
+        milegui.postar("descobri que comprar moveis e coisa pra casa é mais prazeroso que comprar um look novo");
+        milegui.postar("a dor mostra quem agente realmente é. eu sou uma viadona");
 
         otter.cadastrarUsuario("Fabricio", "fabricinho02", "fabricinho.deus27@gmail.com", "2408");
-        otter.buscaUsuario("fabricinho02").postar("e eu lá mulher d fazer back up? Perdi tudo foda-se eu");
-        otter.buscaUsuario("fabricinho02").postar("mais um dia calando a boca daqueles que me elogiavam");
-        otter.buscaUsuario("fabricinho02").postar("n coloco defeito em ngm foi deus que colocou eu só comento");
+        Usuario fabricinho = otter.buscaUsuario("fabricinho02");
+        fabricinho.postar("e eu lá mulher d fazer back up? Perdi tudo foda-se eu");
+        fabricinho.postar("mais um dia calando a boca daqueles que me elogiavam");
+        fabricinho.postar("n coloco defeito em ngm foi deus que colocou eu só comento");
 
         otter.cadastrarUsuario("Allan", "allanbida", "soyfrantiesco@outlook.com", "24");
-        otter.buscaUsuario("allanbida").postar("além d tudo mulher tem um buraco a mais p/ administrar");
-        otter.buscaUsuario("allanbida").postar("Já disse e repito: ñ me levem a sério, sou falsa. manipuladora, mentirosa e filha da puta. Escrevo o q vem na cabeça, so futilidades");
-        otter.buscaUsuario("allanbida").postar("Peguem seus otimismos e sumam d perto d mim. Hj eu tó em crise");
+        Usuario allanbida = otter.buscaUsuario("allanbida");
+        allanbida.postar("além d tudo mulher tem um buraco a mais p/ administrar");
+        allanbida.postar("Já disse e repito: ñ me levem a sério, sou falsa. manipuladora, mentirosa e filha da puta. Escrevo o q vem na cabeça, so futilidades");
+        allanbida.postar("Peguem seus otimismos e sumam d perto d mim. Hj eu tó em crise");
+        allanbida.postar("lorem ipsum");
 
-        do { //logar ou criar conta
+        otter.seguir(milegui, fabricinho);
+        otter.seguir(milegui, allanbida);
+        otter.seguir(allanbida, fabricinho);
+        otter.seguir(allanbida, milegui);
+        otter.seguir(fabricinho, milegui);
+        otter.seguir(fabricinho, allanbida);
+
+        do {
             dentroDoSite = true;
             System.out.println("*** Seja bem vindo ao Otter! ***");
             System.out.println("Opção 1 - Entrar");
@@ -41,6 +52,7 @@ public class Principal {
             int opcaoDentroDoSite = Integer.parseInt(leitura.nextLine());
             System.out.println();
 
+            //logar ou criar conta
             switch (opcaoDentroDoSite) {
                 //Logar
                 case 1 -> {
@@ -68,8 +80,19 @@ public class Principal {
                     System.out.print("Digite seu nome completo: ");
                     String cadastroNome = leitura.nextLine();
 
-                    System.out.print("Digite seu nome de usuário: ");
-                    String cadastroUsername = leitura.nextLine();
+                    String cadastroUsername = null;
+                    do {
+                        System.out.print("Digite seu nome de usuário: ");
+                        String usernameProvisorio = leitura.nextLine();
+
+                        if (otter.validarNomeUsuario(usernameProvisorio)){
+                            cadastroUsername = usernameProvisorio;
+                        } else {
+                            System.out.println("Nome de usuário já em uso, tente outro");
+                            System.out.println();
+                        }
+
+                    } while (cadastroUsername == null);
 
                     System.out.print("Digite um email: ");
                     String cadastroEmail = leitura.nextLine();
@@ -81,10 +104,13 @@ public class Principal {
                     usuarioLogado = otter.buscaUsuario(cadastroUsername);
                     logado = true;
 
+
                     System.out.println();
                     System.out.println("Seja bem vinde @" + usuarioLogado.getUsername() + " ao Otter XD");
                     System.out.println();
                 }
+
+                //Sair do site
                 case 0 -> {
                     System.out.println("Até a próxima, espero te ver em breve ;-;");
                     dentroDoSite = false;
@@ -109,22 +135,113 @@ public class Principal {
                     System.out.println();
 
                     switch (opcaoLogado) {
-                        case 1 -> { // ver o feed
-                            System.out.println("Feed ainda não disponível :c");
-                            System.out.println();
+
+                        case 1 -> {
+                            int opcaoFeed;
+                            int indiceInicial = 0;
+                            int indiceFinal = 2;
+                            boolean dentroDoFeed = true;
+                            int paginaAtual = 1;
+
+                            int quantidadeDePaginas = usuarioLogado.getFeed().size()/3;
+                            int postsUltimaPagina = usuarioLogado.getFeed().size()-(quantidadeDePaginas*3);
+                            if (postsUltimaPagina != 0){
+                                quantidadeDePaginas++;
+                            }
+
+
+                            do {
+                                System.out.println("Total de posts: "+usuarioLogado.getFeed().size());
+                                System.out.println("postsUltima pagina: "+postsUltimaPagina);
+                                System.out.println("quantidade de paginas: "+quantidadeDePaginas);
+                                System.out.println("indice final apos o IF: "+indiceFinal);
+                                System.out.println();
+
+                                for (int i = indiceInicial; i <= indiceFinal; i++) {
+                                    usuarioLogado.getFeed().get(i).imprime();
+                                    System.out.println("indice: "+i);
+                                    System.out.println();
+                                }
+
+                                if (paginaAtual != quantidadeDePaginas)System.out.println("Opção 1 - Ver mais posts");
+                                if (paginaAtual != 1)System.out.println("Opção 2 - Ver posts anteriores");
+                                if (paginaAtual != 1)System.out.println("Opção 3 - Voltar ao começo do feed");
+                                System.out.println("Opção 0 - Voltar");
+                                System.out.println("_________________________________");
+
+                                System.out.print("Digite aqui sua opção: ");
+                                opcaoFeed = Integer.parseInt(leitura.nextLine());
+                                System.out.println();
+
+                                switch (opcaoFeed) {
+                                    // ver mais posts
+                                    case 1 -> {
+                                        if (paginaAtual != quantidadeDePaginas){
+                                            if (paginaAtual == quantidadeDePaginas-1){
+                                                if (postsUltimaPagina != 0){
+                                                    indiceInicial += 3;
+                                                    indiceFinal = indiceFinal + postsUltimaPagina;
+                                                }
+                                            }else {
+                                                indiceInicial += 3;
+                                                indiceFinal += 3;
+                                            }
+                                            paginaAtual ++;
+                                        }else {
+                                            System.out.println("Não tem mais posts para ver");
+                                            System.out.println();
+                                        }
+                                    }
+
+                                    // ver menos posts
+                                    case 2 -> {
+                                        if (paginaAtual != 1){
+                                            indiceInicial = indiceInicial - 3;
+                                            indiceFinal = indiceFinal - 3;
+                                            paginaAtual --;
+                                        }else {
+                                            System.out.println("Não tem como ver posts anteriores");
+                                            System.out.println();
+                                        }
+                                    }
+
+                                    // voltar ao começo do feed
+                                    case 3 ->{
+                                        if (paginaAtual != 1){
+                                            indiceInicial = 0;
+                                            indiceFinal = 2;
+                                            paginaAtual = 1;
+                                        }else {
+                                            System.out.println("Você já está no início do feed");
+                                            System.out.println();
+                                        }
+                                    }
+
+                                    // voltar
+                                    case 0 -> dentroDoFeed = false;
+
+                                    default -> {
+                                        System.out.println("Digite um valor válido");
+                                        System.out.println();
+                                    }
+                                }
+
+                            }while (dentroDoFeed);
                         }
 
-                        case 2 -> { // postar
+                        // postar
+                        case 2 -> {
                             System.out.println("Escreva o que você está sentindo:");
                             usuarioLogado.postar(leitura.nextLine());
                             System.out.println();
                         }
 
-                        case 3 -> { // ver seu perfil
+                        // ver seu perfil
+                        case 3 -> {
                             int opcaoPerfil;
                             boolean dentroDoPerfil = true;
                             System.out.println("*** Perfil de @" + usuarioLogado.getUsername() + " ***");
-                            usuarioLogado.imprime();
+                            usuarioLogado.imprimePerfilUsuario();
                             System.out.println("_________________________________");
                             System.out.println();
 
@@ -144,13 +261,15 @@ public class Principal {
                                 System.out.println();
 
                                 switch (opcaoPerfil) {
-                                    case 1 -> { // ver seu perfil
+                                    // ver seu perfil
+                                    case 1 -> {
                                         System.out.println("*** Perfil de @" + usuarioLogado.getUsername() + " ***");
-                                        usuarioLogado.imprime();
+                                        usuarioLogado.imprimePerfilUsuario();
                                         System.out.println("_________________________________");
                                     }
 
-                                    case 2 -> { // editar sua descrição
+                                    // editar sua descrição
+                                    case 2 -> {
                                         System.out.println("Escreva aquela descrição f0d@");
                                         usuarioLogado.setDescricao(leitura.nextLine());
                                         System.out.println("""
@@ -158,7 +277,8 @@ public class Principal {
                                                 """);
                                     }
 
-                                    case 3 -> { // mudar seu nome de usuário
+                                    // mudar seu nome de usuário
+                                    case 3 -> {
                                         System.out.print("Escreva um novo nome de usuário: ");
                                         String mudarUsername = leitura.nextLine();
 
@@ -173,21 +293,23 @@ public class Principal {
                                         System.out.println();
                                     }
 
-                                    case 4 -> // listar posts do usuário
-                                            usuarioLogado.listarPosts();
+                                    // listar posts do usuário
+                                    case 4 -> usuarioLogado.listarPosts();
 
-                                    case 5 -> { // ver pessoas que te seguem
+                                    // ver pessoas que te seguem
+                                    case 5 -> {
                                         usuarioLogado.mostrarSeguidores(usuarioLogado);
                                         System.out.println();
                                     }
 
-                                    case 6 -> { // ver pessoas que você segue
+                                    // ver pessoas que você segue
+                                    case 6 -> {
                                         usuarioLogado.mostrarPessoasQueSegue(usuarioLogado);
                                         System.out.println();
                                     }
 
-                                    case 0 -> // voltar
-                                            dentroDoPerfil = false;
+                                    // voltar
+                                    case 0 -> dentroDoPerfil = false;
 
                                     default -> {
                                         System.out.println("Digite um valor válido");
@@ -197,7 +319,8 @@ public class Principal {
                             } while (dentroDoPerfil);
                         }
 
-                        case 4 -> { // Procurar algum perfil
+                        // Procurar algum perfil
+                        case 4 -> {
                             int opcaoProcurarPerfil;
                             boolean dentroProcurarPerfil = true;
 
@@ -208,7 +331,7 @@ public class Principal {
 
                             if (usuarioAlvo != null) {
                                 System.out.println("Perfil do @" + usuarioAlvo.getUsername());
-                                usuarioAlvo.imprime();
+                                usuarioAlvo.imprimePerfilUsuario();
                                 System.out.println();
                                 do {
                                     System.out.println("## Escolha uma das opções abaixo ##");
@@ -232,7 +355,7 @@ public class Principal {
 
                                         case 1 -> { // mostra dados do usuario
                                             System.out.println("Perfil do @" + usuarioAlvo.getUsername());
-                                            usuarioAlvo.imprime();
+                                            usuarioAlvo.imprimePerfilUsuario();
 
                                             if (usuarioLogado.validaSegueUsuario(usuarioAlvo)) {
                                                 System.out.println();
@@ -279,11 +402,13 @@ public class Principal {
                             }
                         }
 
-                        case 0 -> { // sair
+                        // sair
+                        case 0 -> {
                             System.out.println("Até a próxima @" + usuarioLogado.getUsername());
                             System.out.println();
                             logado = false;
                         }
+
                         default -> System.out.println("Digite um valor válido");
                     }
                 } while (logado);

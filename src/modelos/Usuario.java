@@ -1,6 +1,7 @@
 package modelos;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Usuario{
@@ -24,7 +25,7 @@ public class Usuario{
 
     //Métodos ----------------------------------
 
-    public void imprime(){
+    public void imprimePerfilUsuario(){
         System.out.println("Nome: "+nome);
         System.out.println("Username: "+username);
         System.out.println("Descrição: "+descricao);
@@ -35,10 +36,6 @@ public class Usuario{
     public void postar(String conteudo){
         Post post = new Post(conteudo, this);
         posts.add(post);
-    }
-
-    public Post getPost(int indexDoPost){
-        return posts.get(indexDoPost);
     }
 
     public void responderPost(String conteudo, Post post){
@@ -54,8 +51,6 @@ public class Usuario{
         for (Post item:posts) {
             System.out.println();
             item.imprime();
-            System.out.println();
-            System.out.println("------------------------------------");
         }
     }
 
@@ -83,7 +78,7 @@ public class Usuario{
         if (!seguidores.isEmpty()){
             System.out.println("Lista de pessoas que seguem @"+username);
             for (Usuario item: seguidores) {
-                    System.out.println("@"+item.getUsername());
+                System.out.println("@"+item.getUsername());
             }
         }else {
             if (usuarioAlvo.getUsername().equals(username)){
@@ -109,7 +104,21 @@ public class Usuario{
         }
     }
 
+
     //Getters e Setters ------------------------------
+
+    public ArrayList<Post> getFeed(){
+        ArrayList<Post> feed = new ArrayList<>();
+
+        for (Usuario itemUsuario:seguindo) {
+            feed.addAll(itemUsuario.posts);
+        }
+
+        Collections.sort(feed);
+        Collections.reverse(feed);
+
+        return feed;
+    }
 
     public String getSenha() {
         return senha;
@@ -117,6 +126,10 @@ public class Usuario{
 
     public String getUsername() {
         return username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setDescricao(String descricao) {

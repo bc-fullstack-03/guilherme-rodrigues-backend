@@ -4,8 +4,14 @@ import java.util.ArrayList;
 
 public class Otter {
     private ArrayList<Usuario> usuarios = new ArrayList<>();
+    private ArrayList<Post> postagens = new ArrayList<>();
 
     public void cadastrarUsuario(String nome, String username, String email, String senha){
+        for (Usuario item:usuarios) {
+            if (username.equals(item.getUsername()) || email.equals(item.getEmail())){
+                System.out.println("Nome de usuário já esta em uso, tente outro");
+            }
+        }
         Usuario usuario = new Usuario(nome, username, email, senha);
         usuarios.add(usuario);
     }
@@ -17,13 +23,6 @@ public class Otter {
             }
         }
         return true;
-    }
-
-    // lista todos os usuarios da lista de usuários
-    public void listarUsuarios(){
-        for (Usuario item: usuarios) {
-            System.out.println("@"+item.getUsername());
-        }
     }
 
     // retorna um usuário específico
@@ -50,7 +49,7 @@ public class Otter {
         } else return usuario.getSenha().equals(senha);
     }
 
-    public void seguir(Usuario usuarioLogado, Usuario usuarioAlvo){ //guarda o nome de usuario na lista de seguidos
+    public void seguir(Usuario usuarioLogado, Usuario usuarioAlvo){
         usuarioLogado.seguirUsuario(usuarioAlvo);
         usuarioAlvo.adicionarSeguidor(usuarioLogado);
     }
@@ -59,7 +58,4 @@ public class Otter {
         usuarioLogado.pararDeSeguir(usuarioAlvo);
         usuarioAlvo.retirarSeguidor(usuarioLogado);
     }
-
-    // listar posts geral ou especifico
-
 }
